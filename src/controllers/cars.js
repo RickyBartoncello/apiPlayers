@@ -8,21 +8,11 @@ class CarsController {
     static fetch(req, res, next) {
         try {
             const cars = require('../data/cars.json');
-            let response;
+            let response; 
 
-            /*const filteredCars = filter(cars, function(car){
-                const priceString = car.price.replace('$', '');
-                const price = toNumber(priceString);
-
-                if (price >= 4000 && price <= 7000){
-                    return true;
-                }else{
-                    return false;
-                } 
-                
-                
-            });*/
             const {field, min, max} = req.query;
+
+        
 
             //Si se pasa el parametro de filtro entonces...
             if (field && min && max) {
@@ -44,7 +34,7 @@ class CarsController {
                     });
                 }
 
-            }
+            } 
             else{
                 response = cars;
             }
@@ -54,6 +44,26 @@ class CarsController {
             next(err);
         }
     }
+
+    static async create(req, res, next) {
+        try {
+            const cars = require('../data/cars.json');
+            let response; 
+
+            const result = await cars.insertOne(req.body);
+            res.send({
+                success: true,
+                result
+            });
+        } catch(err){
+            next(err);
+        }
+
+
+    }
+
+
+
 }
 
 module.exports = CarsController;
